@@ -72,12 +72,17 @@ namespace AsciiArt
             numAddedChars = 0;
             foreach (char ch in word)
             {
-                string filename = $"{_CharacterLocation}/{ch}.txt";
-                bool opened = _FileReader.Open(filename);
+                string filename = string.Empty;
+
+                if (ch == ' ') filename = "blank.txt";
+                else filename = $"{ch}.txt";
+
+                string path = $"{_CharacterLocation}/{filename}";
+                bool opened = _FileReader.Open(path);
 
                 if (!opened)
                 {
-                    Console.WriteLine($"File {filename} could not be opened. Check logs for more information");
+                    Console.WriteLine($"File {path} could not be opened. Check logs for more information");
                     return null;
                 }
 

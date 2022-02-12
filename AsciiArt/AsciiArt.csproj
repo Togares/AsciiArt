@@ -71,6 +71,9 @@
     <Content Include="Resources\b.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\blank.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\c.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
