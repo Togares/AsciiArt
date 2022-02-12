@@ -84,5 +84,10 @@ namespace AsciiArt
                 writer.Write(ToString());
             }
         }
+
+        public void RotateInline(int step)
+        {
+
+        }
     }
 }

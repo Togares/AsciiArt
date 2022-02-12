@@ -19,6 +19,8 @@ namespace AsciiArt
         public int CharacterHeight { get; private set; }
         public int MaxCharacterWidth { get; set; }
 
+        public const int TabStop = 4;
+
         public string Characters { get; private set; }
 
         private FontDefinition() 
