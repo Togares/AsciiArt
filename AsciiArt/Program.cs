@@ -16,6 +16,8 @@ namespace AsciiArt
         private OutputBuffer _Buffer;
         private FileReader _FileReader;
 
+        private List<Character> _CurrentWord;
+
         private ILog _Logger;
 
         static void Main(string[] args)
@@ -33,12 +35,12 @@ namespace AsciiArt
         {
             _Logger = Logger.GetLogger(typeof(Program).Namespace);
             _FileReader = new FileReader();
-            _Buffer = new OutputBuffer(Console.WindowWidth * FontDefinition.Get().CharacterHeight);
         }
 
         public void GetWord()
         {
             string word = Console.ReadLine();
+            Console.Clear();
 
             if (string.IsNullOrEmpty(word))
             {
@@ -46,30 +48,28 @@ namespace AsciiArt
                 return;
             }
 
-            _Buffer.Initialize(new char());
             ProcessWord(word);
+            _Buffer.Print();
         }
 
         private void ProcessWord(string word)
         {
-            int addedChars = 0;
-            List<Character> characters = CreateCharacters(word, out addedChars);
+            _CurrentWord = CreateCharacters(word);
 
-            if (characters is null) return;
+            if (_CurrentWord is null) return;
 
-            int totalLength = FontDefinition.Get().CharacterHeight * FontDefinition.Get().MaxCharacterWidth * characters.Count + FontDefinition.Get().CharacterHeight + addedChars;
-            _Buffer.Resize(totalLength);
-            _Buffer.Initialize(new char());
+            int width = Console.WindowWidth; /*FontDefinition.Get().MaxCharacterWidth* _CurrentWord.Count*/
+            int height = FontDefinition.Get().CharacterHeight;
+            
+            _Buffer = new OutputBuffer(height, width);
 
-            BufferCharacters(characters);
-
-            _Buffer.Print();
+            _Buffer.FillWith(' ');
+            BufferCharacters(_CurrentWord);
         }
 
-        private List<Character> CreateCharacters(string word, out int numAddedChars)
+        private List<Character> CreateCharacters(string word)
         {
             List<Character> characters = new List<Character>();
-            numAddedChars = 0;
             foreach (char ch in word)
             {
                 string filename = string.Empty;
@@ -88,8 +88,7 @@ namespace AsciiArt
 
                 List<string> lines = _FileReader.GetLines().ToList();
                 Character character = new Character(ch);
-                character.Lines = lines;
-                numAddedChars = character.CorrectWhitespaces();
+                character.CreateMatrix(lines);                
                 characters.Add(character);
             }
             return characters;
@@ -97,20 +96,9 @@ namespace AsciiArt
 
         private void BufferCharacters(List<Character> characters)
         {
-            int start = 0;
-            int currentLine = 0;
-            while (currentLine < FontDefinition.Get().CharacterHeight)
+            foreach (var c in characters)
             {
-                string line = string.Empty;
-                foreach (Character character in characters)
-                {
-                    line += character.Lines[currentLine];
-                }
-                _Logger.Debug($"Adding {line} at {start}");
-                line += "\n";
-                _Buffer.PutLine(line, start);
-                start += line.Length;
-                ++currentLine;
+                _Buffer.PutCharacter(c);
             }
         }
     }

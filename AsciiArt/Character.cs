@@ -12,14 +12,18 @@ namespace AsciiArt
 
         public char Ascii { get; private set; }
 
+        public char[,] Matrix { get; private set; }
+
         private List<string> _Lines;
         public List<string> Lines
         {
             get => _Lines;
 
-            set
+            private set
             {
                 _Lines = value;
+                Width = DetermineMaxWidth();
+                CorrectWhitespaces();
                 Width = DetermineMaxWidth();
             }
         }
@@ -29,7 +33,27 @@ namespace AsciiArt
             Ascii = ascii;
         }
 
-        public int DetermineMaxWidth()
+        public void CreateMatrix(List<string> lines)
+        {
+            while(lines.Count > FontDefinition.Get().CharacterHeight)
+            {
+                lines.RemoveAt(lines.Count - 1);
+            }
+
+            Lines = lines;
+
+            Matrix = new char[FontDefinition.Get().CharacterHeight, Width];
+
+            for (int y = 0; y < Lines.Count;  ++y)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    Matrix[y, x] = Lines[y][x];
+                }
+            }
+        }
+
+        private int DetermineMaxWidth()
         {
             int result = 0;
 
@@ -43,7 +67,7 @@ namespace AsciiArt
             return result;
         }
 
-        public int CorrectWhitespaces()
+        private int CorrectWhitespaces()
         {
             int totalCharsAdded = 0;
             for (int i = 0; i < _Lines.Count; ++i)
