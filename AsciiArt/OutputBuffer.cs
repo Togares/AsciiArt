@@ -40,6 +40,30 @@ namespace AsciiArt
             _ContainedChars.Add(character);
         }
 
+        public void MoveInline(int cols)
+        {
+            for (int y = 0; y < _Height; ++y)
+            {
+                cols = cols % _Width;
+
+                char[] temp = new char[cols];
+                for (int i = 0; i < cols; i++)
+                {
+                    temp[i] = _Buffer[y, i];
+                }
+
+                for(int x = 0; x < _Width - cols; ++x)
+                {
+                    Swap(x, y, x + cols, y);
+                }
+
+                for (int i = 0; i < cols; i++)
+                {
+                    _Buffer[y, i + (_Width - cols)] = temp[i];
+                }
+            }
+        }
+
         public void FillWith(char c)
         {
             for (int y = 0; y < _Height; ++y)
@@ -70,6 +94,13 @@ namespace AsciiArt
                 result += character.Width;
             }
             return result;
+        }
+
+        private void Swap(int x1, int y1, int x2, int y2)
+        {
+            char temp = _Buffer[y1, x1];
+            _Buffer[y1, x1] = _Buffer[y2, x2];
+            _Buffer[y2, x2] = temp;
         }
     }
 }

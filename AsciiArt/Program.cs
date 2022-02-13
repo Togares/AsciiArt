@@ -20,14 +20,29 @@ namespace AsciiArt
 
         private ILog _Logger;
 
+        public static bool Moving = true;
+
         static void Main(string[] args)
         {
             Logger.Configure();
             Program instance = new Program();
-            instance.Initialize();
+            instance.Initialize();            
+
+            Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e)
+            {
+                e.Cancel = true;
+                Moving = false;
+            };
+
             while (true)
             {
                 instance.GetWord();
+
+                while(Moving)
+                {
+                    Console.WriteLine("Press CTRL+C to interrupt and change the word");
+                    instance.MoveWord();
+                }
             }
         }
 
@@ -50,6 +65,15 @@ namespace AsciiArt
 
             ProcessWord(word);
             _Buffer.Print();
+            Moving = true;
+        }
+
+        public void MoveWord()
+        {
+            _Buffer.MoveInline(FontDefinition.Get().MaxCharacterWidth);
+            Thread.Sleep(200);
+            Console.Clear();
+            _Buffer.Print();
         }
 
         private void ProcessWord(string word)
@@ -60,7 +84,7 @@ namespace AsciiArt
 
             int width = Console.WindowWidth; /*FontDefinition.Get().MaxCharacterWidth* _CurrentWord.Count*/
             int height = FontDefinition.Get().CharacterHeight;
-            
+
             _Buffer = new OutputBuffer(height, width);
 
             _Buffer.FillWith(' ');
@@ -88,7 +112,7 @@ namespace AsciiArt
 
                 List<string> lines = _FileReader.GetLines().ToList();
                 Character character = new Character(ch);
-                character.CreateMatrix(lines);                
+                character.CreateMatrix(lines);
                 characters.Add(character);
             }
             return characters;
