@@ -1,4 +1,7 @@
 ﻿using AsciiArt.File;
+using AsciiArt.Font;
+using AsciiArt.Logging;
+using AsciiArt.Network;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -11,36 +14,28 @@ namespace AsciiArt
 {
     class Program
     {
-        private const string _CharacterLocation = @"./Resources";
+        private ILog _Logger;
+        private IFileReader _FileReader;
+        private IFontDefinition _FontDefinition;
+        private ICharacterFactory _CharacterFactory;
 
         private OutputBuffer _Buffer;
-        private FileReader _FileReader;
-
         private List<Character> _CurrentWord;
+        private Server _Server;
 
-        private ILog _Logger;
 
-        public static bool Moving = true;
+        public static bool Moving = false;
 
         static void Main(string[] args)
         {
             Logger.Configure();
             Program instance = new Program();
-            instance.Initialize();            
-
-            Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e)
-            {
-                e.Cancel = true;
-                Moving = false;
-            };
+            instance.Initialize();
 
             while (true)
             {
-                instance.GetWord();
-
-                while(Moving)
+                while (Moving)
                 {
-                    Console.WriteLine("Press CTRL+C to interrupt and change the word");
                     instance.MoveWord();
                 }
             }
@@ -49,14 +44,27 @@ namespace AsciiArt
         public void Initialize()
         {
             _Logger = Logger.GetLogger(typeof(Program).Namespace);
+
             _FileReader = new FileReader();
+            _FontDefinition = new FontDefinition(_FileReader);
+            _CharacterFactory = new CharacterFactory(_FileReader, _FontDefinition);
+
+            _Server = new Server();
+            _Server.DataReceived += OnDataReceived;
+            _ = _Server.Start();
         }
 
-        public void GetWord()
+        public void MoveWord()
         {
-            string word = Console.ReadLine();
+            _Buffer.MoveInline(1);
+            Thread.Sleep(200);
             Console.Clear();
+            _Buffer.Print();
+        }
 
+        private void OnDataReceived(object sender, DataReceivedEventArgs args)
+        {
+            string word = args.Data;
             if (string.IsNullOrEmpty(word))
             {
                 _Logger.Info($"GetWord - Input was null or empty. Returning to parent routine");
@@ -68,22 +76,14 @@ namespace AsciiArt
             Moving = true;
         }
 
-        public void MoveWord()
-        {
-            _Buffer.MoveInline(FontDefinition.Get().MaxCharacterWidth);
-            Thread.Sleep(200);
-            Console.Clear();
-            _Buffer.Print();
-        }
-
         private void ProcessWord(string word)
         {
             _CurrentWord = CreateCharacters(word);
 
             if (_CurrentWord is null) return;
 
-            int width = Console.WindowWidth; /*FontDefinition.Get().MaxCharacterWidth* _CurrentWord.Count*/
-            int height = FontDefinition.Get().CharacterHeight;
+            int width = Console.WindowWidth;
+            int height = _FontDefinition.CharacterHeight;
 
             _Buffer = new OutputBuffer(height, width);
 
@@ -96,23 +96,7 @@ namespace AsciiArt
             List<Character> characters = new List<Character>();
             foreach (char ch in word)
             {
-                string filename = string.Empty;
-
-                if (ch == ' ') filename = "blank.txt";
-                else filename = $"{ch}.txt";
-
-                string path = $"{_CharacterLocation}/{filename}";
-                bool opened = _FileReader.Open(path);
-
-                if (!opened)
-                {
-                    Console.WriteLine($"File {path} could not be opened. Check logs for more information");
-                    return null;
-                }
-
-                List<string> lines = _FileReader.GetLines().ToList();
-                Character character = new Character(ch);
-                character.CreateMatrix(lines);
+                Character character = _CharacterFactory.Create(ch);
                 characters.Add(character);
             }
             return characters;

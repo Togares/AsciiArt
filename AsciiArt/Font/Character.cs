@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AsciiArt
+namespace AsciiArt.Font
 {
     internal class Character
     {
+        private IFontDefinition _FontDefinition;
+
         public int Width { get; private set; }
-
         public char Ascii { get; private set; }
-
         public char[,] Matrix { get; private set; }
 
         private List<string> _Lines;
@@ -28,21 +28,22 @@ namespace AsciiArt
             }
         }
 
-        public Character(char ascii)
+        public Character(char ascii, IFontDefinition fontDefinition)
         {
             Ascii = ascii;
+            _FontDefinition = fontDefinition;
         }
 
         public void CreateMatrix(List<string> lines)
         {
-            while(lines.Count > FontDefinition.Get().CharacterHeight)
+            while(lines.Count > _FontDefinition.CharacterHeight)
             {
                 lines.RemoveAt(lines.Count - 1);
             }
 
             Lines = lines;
 
-            Matrix = new char[FontDefinition.Get().CharacterHeight, Width];
+            Matrix = new char[_FontDefinition.CharacterHeight, Width];
 
             for (int y = 0; y < Lines.Count;  ++y)
             {
@@ -62,7 +63,7 @@ namespace AsciiArt
                 result = Math.Max(result, line.Length);
             }
 
-            FontDefinition.Get().MaxCharacterWidth = Math.Max(FontDefinition.Get().MaxCharacterWidth, result);
+            _FontDefinition.MaxCharacterWidth = Math.Max(_FontDefinition.MaxCharacterWidth, result);
 
             return result;
         }
@@ -79,7 +80,7 @@ namespace AsciiArt
                     int tabLocation = line.IndexOf("\t");
                     if (tabLocation >= 0)
                     {
-                        int numBlanks = (tabLocation + FontDefinition.TabStop) / FontDefinition.TabStop * FontDefinition.TabStop;
+                        int numBlanks = (tabLocation + _FontDefinition.TabStop) / _FontDefinition.TabStop * _FontDefinition.TabStop;
                         string blanks = "";
                         for (int j = tabLocation; j < numBlanks; ++j)
                         {

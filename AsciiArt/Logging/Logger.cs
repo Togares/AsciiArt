@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AsciiArt
+namespace AsciiArt.Logging
 {
     internal class Logger
     {
