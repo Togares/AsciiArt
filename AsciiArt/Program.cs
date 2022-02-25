@@ -15,14 +15,13 @@ namespace AsciiArt
     class Program
     {
         private ILog _Logger;
+        private IServer _Server;
         private IFileReader _FileReader;
         private IFontDefinition _FontDefinition;
         private ICharacterFactory _CharacterFactory;
 
         private OutputBuffer _Buffer;
         private List<Character> _CurrentWord;
-        private Server _Server;
-
 
         public static bool Moving = false;
 
@@ -51,7 +50,7 @@ namespace AsciiArt
 
             _Server = new Server();
             _Server.DataReceived += OnDataReceived;
-            _ = _Server.Start();
+            _ = _Server.ListenAsync();
         }
 
         public void MoveWord()
@@ -62,7 +61,7 @@ namespace AsciiArt
             _Buffer.Print();
         }
 
-        private void OnDataReceived(object sender, DataReceivedEventArgs args)
+        private void OnDataReceived(object sender, IDataReceivedEventArgs args)
         {
             string word = args.Data;
             if (string.IsNullOrEmpty(word))

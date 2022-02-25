@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AsciiArt.Network
 {
-    public class DataReceivedEventArgs
+    public class DataReceivedEventArgs : IDataReceivedEventArgs
     {
         public DataReceivedEventArgs(string data)
         {
