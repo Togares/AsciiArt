@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31112.23
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsciiArt", "AsciiArt\AsciiArt.csproj", "{608256A7-D1E8-4E44-B730-1E5AB6793E75}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsciiArtClient", "AsciiArtClient\AsciiArtClient.csproj", "{44751F26-79F2-4319-AEC1-6D6BF2228A97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunicationModel", "CommunicationModel\CommunicationModel.csproj", "{87D60FD1-BEBD-4CA8-B40B-9643201812A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{44751F26-79F2-4319-AEC1-6D6BF2228A97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44751F26-79F2-4319-AEC1-6D6BF2228A97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44751F26-79F2-4319-AEC1-6D6BF2228A97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87D60FD1-BEBD-4CA8-B40B-9643201812A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87D60FD1-BEBD-4CA8-B40B-9643201812A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87D60FD1-BEBD-4CA8-B40B-9643201812A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87D60FD1-BEBD-4CA8-B40B-9643201812A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -69,7 +69,12 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\CommunicationModel\CommunicationModel.csproj">
+      <Project>{87d60fd1-bebd-4ca8-b40b-9643201812a1}</Project>
+      <Name>CommunicationModel</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Logging\log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
