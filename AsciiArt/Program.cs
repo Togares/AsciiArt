@@ -74,7 +74,7 @@ namespace AsciiArt
 
             ProcessData(args);
             _Buffer.Print();
-            Moving = true;
+            Moving = !string.IsNullOrEmpty(args.Data);
         }
 
         private void ProcessData(IDataReceivedEventArgs args)

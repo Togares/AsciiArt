@@ -26,14 +26,7 @@ namespace AsciiArtClient
 
             string input = Console.ReadLine();
 
-            ClientData data = new ClientData();
-            data.Command = ClientCommand.ChangeWord;
-            data.CommandSpecified = true;
-            data.Interval = 1000;
-            data.IntervalSpecified = true;
-            data.Speed = 5;
-            data.SpeedSpecified = true;
-            data.Data = input;
+            ClientData data = ParseInput(input);
 
             byte[] word = Encoding.UTF8.GetBytes(CommunicationData.Serialize(data));
             
@@ -46,6 +39,44 @@ namespace AsciiArtClient
                     client.GetStream().Write(word, 0, word.Length);
                 }
             }
+        }
+
+        private ClientData ParseInput(string input)
+        {
+            ClientData result = new ClientData();
+
+            string[] data = input.Split('\u002C');
+
+            try
+            {
+                result.Data = data[0];
+            }
+            catch (Exception)
+            {
+                result.Data = "";
+            }
+
+            try
+            {
+                result.Interval = int.Parse(data[1]);
+            }
+            catch (Exception)
+            {
+                result.Interval = 500;
+            }
+            result.IntervalSpecified = true;
+
+            try
+            {
+                result.Speed = int.Parse(data[2]);
+            }
+            catch (Exception)
+            {
+                result.Speed = 1;
+            }
+            result.SpeedSpecified = true;
+
+            return result;
         }
     }
 }
