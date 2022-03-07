@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -11,6 +12,8 @@ namespace AsciiArtClient
 {
     class Client
     {
+        private IPEndPoint _EndPoint = new IPEndPoint(IPAddress.Loopback, 42069);
+
         static void Main(string[] args)
         {
             Client instance = new Client();
@@ -32,7 +35,7 @@ namespace AsciiArtClient
             
             using (TcpClient client = new TcpClient())
             {
-                client.Connect("127.0.0.1", 42069);
+                client.Connect(_EndPoint);
 
                 if (client.Connected)
                 {

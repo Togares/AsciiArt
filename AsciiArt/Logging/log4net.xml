@@ -2,7 +2,7 @@
 <log4net>	
 	<appender name="RollingFile" type="log4net.Appender.RollingFileAppender">
 
-		<file value="asciiart.log"/>
+		<file value="/log/asciiart.log"/>
 		<appendToFile value="true"/>
 		<maximumFileSize value="1mb"/>
 		<maxSizeRollBackups value="2"/>
