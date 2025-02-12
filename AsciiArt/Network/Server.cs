@@ -13,19 +13,20 @@ namespace AsciiArt.Network
     {        
         private TcpListener _Listener;
 
+        private IPEndPoint _EndPoint;
+
         public int Port { get; set; } = 42069;
-        public IPAddress IP { get; private set; }        
 
         public event DataReceivedHandler DataReceived;
 
         public Server()
-        {            
-            IP = Dns.GetHostEntry("127.0.0.1").AddressList[0];
+        {
+            _EndPoint = new IPEndPoint(IPAddress.Loopback, Port);
         }
 
         public async Task ListenAsync()
         {
-            _Listener = new TcpListener(IP, Port);
+            _Listener = new TcpListener(_EndPoint);
             _Listener.Start();
 
             while(true)

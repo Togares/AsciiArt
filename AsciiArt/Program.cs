@@ -100,7 +100,7 @@ namespace AsciiArt
             foreach (char ch in word)
             {
                 Character character = _CharacterFactory.Create(ch);
-                characters.Add(character);
+                if(character != null) characters.Add(character);
             }
             return characters;
         }

@@ -1,4 +1,6 @@
 ﻿using AsciiArt.File;
+using AsciiArt.Logging;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,7 @@ namespace AsciiArt.Font
 {
     internal class CharacterFactory : ICharacterFactory
     {
+        private ILog _Logger = Logger.GetLogger(typeof(CharacterFactory).Namespace);
         private IFileReader _FileReader;
         private IFontDefinition _FontDefinition;
 
@@ -30,7 +33,9 @@ namespace AsciiArt.Font
 
             if (!opened)
             {
-                Console.WriteLine($"File {path} could not be opened. Check logs for more information");
+                string error = $"File {path} could not be opened. Check logs for more information";
+                _Logger.Error(error);
+                Console.WriteLine(error);
                 return null;
             }
 
