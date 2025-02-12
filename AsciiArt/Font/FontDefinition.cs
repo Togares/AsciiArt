@@ -6,40 +6,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AsciiArt
+namespace AsciiArt.Font
 {
-    class FontDefinition
+    internal class FontDefinition : IFontDefinition
     {
-        private static FontDefinition _Instance;
-        
-        private const string _Filename = @"./Resources/font.def";
+        private IFileReader _FileReader;
+        private string _Filename;
 
-        private FileReader _FileReader = new FileReader();
-
+        public int TabStop => 4;
+        public string FontFolder => @"./_Resources";
         public int CharacterHeight { get; private set; }
         public int MaxCharacterWidth { get; set; }
-
-        public const int TabStop = 4;
-
         public string Characters { get; private set; }
 
-        private FontDefinition() 
+        public FontDefinition(IFileReader fileReader, string filename = "font.def") 
         {
+            _FileReader = fileReader;
+            _Filename = filename;
             Initialize();
-        }
-
-        public static FontDefinition Get()
-        {
-            return _Instance = _Instance == null ? new FontDefinition() : _Instance;
         }
 
         private void Initialize()
         {
-            bool opened = _FileReader.Open(_Filename);
+            string path = $"{FontFolder}/{_Filename}";
+            bool opened = _FileReader.Open(path);
 
             if(!opened)
             {
-                Console.WriteLine($"File {_Filename} could not be opened. Check logs for more information");
+                Console.WriteLine($"File {path} could not be opened. Check logs for more information");
                 return;
             }
 

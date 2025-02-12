@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using AsciiArt.Logging;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AsciiArt.File
 {
-    internal class FileReader
+    internal class FileReader : IFileReader
     {
         private StreamReader _Reader;
         private ILog _Logger;

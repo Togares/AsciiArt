@@ -48,11 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Character.cs" />
+    <Compile Include="File\IFileReader.cs" />
+    <Compile Include="Font\Character.cs" />
     <Compile Include="File\FileReader.cs" />
-    <Compile Include="FontDefinition.cs" />
-    <Compile Include="Logger.cs" />
-    <Compile Include="OutputBuffer.cs" />
+    <Compile Include="Font\CharacterFactory.cs" />
+    <Compile Include="Font\FontDefinition.cs" />
+    <Compile Include="Font\ICharacterBuffer.cs" />
+    <Compile Include="Font\ICharacterFactory.cs" />
+    <Compile Include="Font\IFontDefinition.cs" />
+    <Compile Include="Network\DataReceivedEventArgs.cs" />
+    <Compile Include="Network\Server.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Font\OutputBuffer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -62,91 +69,91 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="log4net.xml">
+    <Content Include="Logging\log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\a.txt">
+    <Content Include="_Resources\a.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\b.txt">
+    <Content Include="_Resources\b.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\blank.txt">
+    <Content Include="_Resources\blank.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\c.txt">
+    <Content Include="_Resources\c.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\d.txt">
+    <Content Include="_Resources\d.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\e.txt">
+    <Content Include="_Resources\e.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\f.txt">
+    <Content Include="_Resources\f.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\font.def">
+    <Content Include="_Resources\font.def">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\g.txt">
+    <Content Include="_Resources\g.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\h.txt">
+    <Content Include="_Resources\h.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\i.txt">
+    <Content Include="_Resources\i.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\j.txt">
+    <Content Include="_Resources\j.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\k.txt">
+    <Content Include="_Resources\k.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\l.txt">
+    <Content Include="_Resources\l.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\m.txt">
+    <Content Include="_Resources\m.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\n.txt">
+    <Content Include="_Resources\n.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\o.txt">
+    <Content Include="_Resources\o.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\p.txt">
+    <Content Include="_Resources\p.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\q.txt">
+    <Content Include="_Resources\q.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\r.txt">
+    <Content Include="_Resources\r.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\s.txt">
+    <Content Include="_Resources\s.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\t.txt">
+    <Content Include="_Resources\t.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\u.txt">
+    <Content Include="_Resources\u.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\v.txt">
+    <Content Include="_Resources\v.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\w.txt">
+    <Content Include="_Resources\w.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\x.txt">
+    <Content Include="_Resources\x.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\y.txt">
+    <Content Include="_Resources\y.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\z.txt">
+    <Content Include="_Resources\z.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

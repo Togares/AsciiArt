@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using AsciiArt.Logging;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AsciiArt
+namespace AsciiArt.Font
 {
     internal class OutputBuffer
     {
@@ -46,17 +47,20 @@ namespace AsciiArt
             {
                 cols = cols % _Width;
 
+                // spalten die wegfallen würden
                 char[] temp = new char[cols];
                 for (int i = 0; i < cols; i++)
                 {
                     temp[i] = _Buffer[y, i];
                 }
 
+                // move
                 for(int x = 0; x < _Width - cols; ++x)
                 {
                     Swap(x, y, x + cols, y);
                 }
 
+                // weggefallenes wieder dran machen
                 for (int i = 0; i < cols; i++)
                 {
                     _Buffer[y, i + (_Width - cols)] = temp[i];
