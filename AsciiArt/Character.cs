@@ -21,7 +21,6 @@ namespace AsciiArt
             {
                 _Lines = value;
                 Width = DetermineMaxWidth();
-                FontDefinition.Get().MaxCharacterWidth = Math.Max(FontDefinition.Get().MaxCharacterWidth, Width);
             }
         }
 
@@ -30,7 +29,7 @@ namespace AsciiArt
             Ascii = ascii;
         }
 
-        private int DetermineMaxWidth()
+        public int DetermineMaxWidth()
         {
             int result = 0;
 
@@ -39,18 +38,45 @@ namespace AsciiArt
                 result = Math.Max(result, line.Length);
             }
 
+            FontDefinition.Get().MaxCharacterWidth = Math.Max(FontDefinition.Get().MaxCharacterWidth, result);
+
             return result;
         }
-    
-        public void CorrectWhitespaces()
+
+        public int CorrectWhitespaces()
         {
+            int totalCharsAdded = 0;
             for (int i = 0; i < _Lines.Count; ++i)
             {
-                while(_Lines[i].Length < Width)
+                // replace tabs with blanks for consistency
+                string line = _Lines[i];
+                while (line.Contains("\t"))
+                {
+                    int tabLocation = line.IndexOf("\t");
+                    if (tabLocation >= 0)
+                    {
+                        int numBlanks = (tabLocation + FontDefinition.TabStop) / FontDefinition.TabStop * FontDefinition.TabStop;
+                        string blanks = "";
+                        for (int j = tabLocation; j < numBlanks; ++j)
+                        {
+                            blanks += " ";
+                        }
+
+                        _Lines[i] = line = line.Remove(tabLocation, 1);
+                        _Lines[i] = line = line.Insert(tabLocation, blanks);
+
+                        totalCharsAdded += numBlanks;
+                    }
+                }
+
+                // add blanks on the right for consistent width
+                while (_Lines[i].Length < Width)
                 {
                     _Lines[i] += " ";
                 }
+
             }
+            return totalCharsAdded;
         }
     }
 }

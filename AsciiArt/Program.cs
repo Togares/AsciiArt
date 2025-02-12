@@ -33,7 +33,7 @@ namespace AsciiArt
         {
             _Logger = Logger.GetLogger(typeof(Program).Namespace);
             _FileReader = new FileReader();
-            _Buffer = new OutputBuffer(0);
+            _Buffer = new OutputBuffer(Console.WindowWidth * FontDefinition.Get().CharacterHeight);
         }
 
         public void GetWord()
@@ -52,11 +52,12 @@ namespace AsciiArt
 
         private void ProcessWord(string word)
         {
-            List<Character> characters = CreateCharacters(word);
+            int addedChars = 0;
+            List<Character> characters = CreateCharacters(word, out addedChars);
 
             if (characters is null) return;
 
-            int totalLength = FontDefinition.Get().CharacterHeight * FontDefinition.Get().MaxCharacterWidth * characters.Count + FontDefinition.Get().CharacterHeight;
+            int totalLength = FontDefinition.Get().CharacterHeight * FontDefinition.Get().MaxCharacterWidth * characters.Count + FontDefinition.Get().CharacterHeight + addedChars;
             _Buffer.Resize(totalLength);
             _Buffer.Initialize(new char());
 
@@ -65,9 +66,10 @@ namespace AsciiArt
             _Buffer.Print();
         }
 
-        private List<Character> CreateCharacters(string word)
+        private List<Character> CreateCharacters(string word, out int numAddedChars)
         {
             List<Character> characters = new List<Character>();
+            numAddedChars = 0;
             foreach (char ch in word)
             {
                 string filename = $"{_CharacterLocation}/{ch}.txt";
@@ -82,7 +84,7 @@ namespace AsciiArt
                 List<string> lines = _FileReader.GetLines().ToList();
                 Character character = new Character(ch);
                 character.Lines = lines;
-                character.CorrectWhitespaces();
+                numAddedChars = character.CorrectWhitespaces();
                 characters.Add(character);
             }
             return characters;
