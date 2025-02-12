@@ -9,15 +9,12 @@ using System.Threading.Tasks;
 
 namespace AsciiArt.Network
 {
-    public class Server
+    public class Server : IServer
     {        
-        public int Port { get; set; } = 42069;
-
-        public IPAddress IP { get; private set; }
-        
         private TcpListener _Listener;
 
-        public delegate void DataReceivedHandler(object sender, DataReceivedEventArgs args);
+        public int Port { get; set; } = 42069;
+        public IPAddress IP { get; private set; }        
 
         public event DataReceivedHandler DataReceived;
 
@@ -26,7 +23,7 @@ namespace AsciiArt.Network
             IP = Dns.GetHostEntry("127.0.0.1").AddressList[0];
         }
 
-        public async Task Start()
+        public async Task ListenAsync()
         {
             _Listener = new TcpListener(IP, Port);
             _Listener.Start();
