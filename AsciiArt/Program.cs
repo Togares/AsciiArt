@@ -2,6 +2,7 @@
 using AsciiArt.Font;
 using AsciiArt.Logging;
 using AsciiArt.Network;
+using CommunicationModel;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,8 @@ namespace AsciiArt
         private IFontDefinition _FontDefinition;
         private ICharacterFactory _CharacterFactory;
 
+        private volatile ClientData _ClientData;
+
         private OutputBuffer _Buffer;
         private List<Character> _CurrentWord;
 
@@ -33,7 +36,7 @@ namespace AsciiArt
 
             while (true)
             {
-                while (Moving)
+                if (Moving)
                 {
                     instance.MoveWord();
                 }
@@ -55,29 +58,30 @@ namespace AsciiArt
 
         public void MoveWord()
         {
-            _Buffer.MoveInline(1);
-            Thread.Sleep(200);
+            _Buffer.MoveInline(_ClientData.Speed);
+            Thread.Sleep(_ClientData.Interval);
             Console.Clear();
             _Buffer.Print();
         }
 
         private void OnDataReceived(object sender, IDataReceivedEventArgs args)
         {
-            string word = args.Data;
-            if (string.IsNullOrEmpty(word))
+            if (args is null || string.IsNullOrEmpty(args.Data))
             {
                 _Logger.Info($"GetWord - Input was null or empty. Returning to parent routine");
                 return;
             }
 
-            ProcessWord(word);
+            ProcessData(args);
             _Buffer.Print();
             Moving = true;
         }
 
-        private void ProcessWord(string word)
+        private void ProcessData(IDataReceivedEventArgs args)
         {
-            _CurrentWord = CreateCharacters(word);
+            _ClientData = CommunicationData.Deserialize(args.Data);
+
+            _CurrentWord = CreateCharacters(_ClientData.Data);
 
             if (_CurrentWord is null) return;
 

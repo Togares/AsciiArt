@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunicationModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -22,7 +23,19 @@ namespace AsciiArtClient
 
         public void SendWord()
         {
-            byte[] word = Encoding.UTF8.GetBytes(Console.ReadLine());
+
+            string input = Console.ReadLine();
+
+            ClientData data = new ClientData();
+            data.Command = ClientCommand.ChangeWord;
+            data.CommandSpecified = true;
+            data.Interval = 1000;
+            data.IntervalSpecified = true;
+            data.Speed = 5;
+            data.SpeedSpecified = true;
+            data.Data = input;
+
+            byte[] word = Encoding.UTF8.GetBytes(CommunicationData.Serialize(data));
             
             using (TcpClient client = new TcpClient())
             {
